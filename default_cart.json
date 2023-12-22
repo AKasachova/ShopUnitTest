@@ -1,0 +1,18 @@
+{
+  "cart_name": "default-cart",
+  "real_items": [
+    {
+      "weight": 1.0,
+      "name": "Toy",
+      "price": 100.0
+    }
+  ],
+  "virtual_items": [
+    {
+      "disk_size": 8500.0,
+      "name": "Microsoft office",
+      "price": 30.0
+    }
+  ],
+  "total": 156.1
+}
