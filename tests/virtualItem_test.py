@@ -13,3 +13,4 @@ def invalid_param_data_virtual_item():
 def test_missed_param_data_virtual_item_creation(invalid_param_data_virtual_item):
     with pytest.raises(TypeError):
         VirtualItem.to_str()
+        
