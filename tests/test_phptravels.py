@@ -5,7 +5,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import time
 
-
 class ByLocators:
     TAG_NAME = By.TAG_NAME, "tag name from the project to find element by"
     ID = By.ID, "Id from the project to find element by"
@@ -13,17 +12,19 @@ class ByLocators:
     CSS_SELECTOR = By.CSS_SELECTOR, "CSS selector from the project to find element by"
     NAME = By.NAME, "Element name from the project to find element by"
     CLASS_NAME = By.CLASS_NAME, "Class name from the project to find element by"
-    LINK_TEXT = By.LINK_TEXT, 'Link search, to search hyperlinks  for the text displayed on this hyperlink'
-    PARTIAL_LINK_TEXT = By.PARTIAL_LINK_TEXT, 'Link search, to search hyperlinks  for the text displayed on this hyperlink'
+    LINK_TEXT = By.LINK_TEXT, 'Link search, to search hyperlinks by the full hyperlink text '
+    PARTIAL_LINK_TEXT = By.PARTIAL_LINK_TEXT, 'Link search, tto search hyperlinks by the partial hyperlink tex'
 
 
 class TestLoginWithCorrectCreds(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
-        #self.driver = webdriver.Firefox()
+        # self.driver = webdriver.Firefox()
+
 
     def tearDown(self):
         self.driver.quit()
+
 
     def test_login(self):
         self.driver.get('https://phptravels.com/demo/')
@@ -31,10 +32,7 @@ class TestLoginWithCorrectCreds(unittest.TestCase):
         # Current tab
         main_tab = self.driver.current_window_handle
         login_button = WebDriverWait(self.driver, 10).until(ec.element_to_be_clickable((By.CLASS_NAME, 'btn-outline-dark')))
-        if login_button.is_displayed():
-            login_button.click()
-        else:
-            print("Element is not visible.")
+        login_button.click()
         # Wait for the new tab to be visible
         WebDriverWait(self.driver, 10).until(lambda driver: len(driver.window_handles) > 1)
         all_tabs = self.driver.window_handles
@@ -43,27 +41,26 @@ class TestLoginWithCorrectCreds(unittest.TestCase):
         self.driver.switch_to.window(new_tab)
         # Wait for the login form to be visible
         WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.CLASS_NAME, "login-form")))
-        self.driver.maximize_window()
         # Add login data
         email_input = self.driver.find_element(By.NAME, "username")
         password_input = self.driver.find_element(By.NAME, "password")
-        # recaptcha_checkbox functionality must be disabled
+        # Skip captcha element(on real project feature  captcha ("I'm not a robot") must be off/automation is not possible)
         login_button_2 = WebDriverWait(self.driver, 10).until(ec.element_to_be_clickable((By.ID, "login")))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", login_button_2)
-
+        # Adding existing user correct data
         email_input.send_keys("alionakosachova@gmail.com")
         password_input.send_keys("Aliona1!")
-        #On real project feature  capcha ("I'm not a robot") must be off/automatization is not possible
+        # Set captcha verification manually
         time.sleep(30)
         login_button_2.click()
-
-        current_url = self.driver.current_url
+        # Verify username on a page after log into the account
         self.driver.maximize_window()
         link_element = self.driver.find_element(By.CSS_SELECTOR, "a.btn-active-client")
         username = link_element.find_element(By.TAG_NAME, "span").text
-
-        self.assertIn("Test", username, f"Expected 'Test' to be present in the Logged in as, but got: {username}")
-
+        self.assertIn("Test", username, f"Expected 'Test' to be present in the 'Logged in as', but got: {username}")
+    # This allows you to run tests if the file is run directly, but not if the file is imported into another script.
     # if __name__ == '__main__':
     #     unittest.main()
+
+
 
