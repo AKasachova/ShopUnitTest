@@ -5,6 +5,14 @@ from unittest.mock import mock_open, patch
 from src.parser.json_cart_parser import read_from_file, write_to_file, CartEncoder
 
 @pytest.fixture
+def file_for_writing():
+    test_file = open("test_write_to_file.txt", "w+")
+    yield test_file
+    test_file.close()
+    os.remove("test_write_to_file.txt")
+
+
+@pytest.fixture
 def valid_json_data_zero_items():
     return '{"cart_name": "TestCart_0", "real_items": [], "virtual_items": [], "total": 0}'
 
@@ -20,15 +28,10 @@ def test_read_from_file_zero_items(valid_json_data_zero_items):
 
 
 @pytest.mark.positive_write
-def test_write_to_file_zero_items(valid_json_data_zero_items):
-    test_file_path = "test_write_to_file_zero_items.txt"
-    test_file = open(test_file_path, "w+")
-    write_to_file(valid_json_data_zero_items, test_file_path)
-    actual_content = test_file.read()
+def test_write_to_file_zero_items(valid_json_data_zero_items, file_for_writing):
+    write_to_file(valid_json_data_zero_items, "test_write_to_file.txt")
+    actual_content = file_for_writing.read()
     expected_content = json.dumps(valid_json_data_zero_items, cls=CartEncoder)
-    test_file.close()
-    # to remove created file with data
-    # os.remove(test_file_path)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
 
@@ -51,15 +54,10 @@ def test_read_from_file_1real_item(valid_json_data_1real_item):
 
 
 @pytest.mark.positive_write
-def test_write_to_file_1real_item(valid_json_data_1real_item):
-    test_file_path = "test_write_to_file_1real_item.txt"
-    test_file = open(test_file_path, "w+")
-    write_to_file(test_write_to_file_1real_item, test_file_path)
-    actual_content = test_file.read()
+def test_write_to_file_1real_item(valid_json_data_1real_item, file_for_writing):
+    write_to_file(test_write_to_file_1real_item, "test_write_to_file.txt")
+    actual_content = file_for_writing.read()
     expected_content = json.dumps(test_write_to_file_1real_item, cls=CartEncoder)
-    test_file.close()
-    # to remove created file with data
-    # os.remove(test_file_path)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
 
@@ -82,15 +80,10 @@ def test_read_from_file_1virtual_item(valid_json_data_1virtual_item):
 
 
 @pytest.mark.positive_write
-def test_write_to_file_1virtual_item(valid_json_data_1virtual_item):
-    test_file_path = "test_write_to_file_1virtual_item.txt"
-    test_file = open(test_file_path, "w+")
-    write_to_file(test_write_to_file_1virtual_item, test_file_path)
-    actual_content = test_file.read()
-    expected_content = json.dumps(test_write_to_file_1virtual_item, cls=CartEncoder)
-    test_file.close()
-    # to remove created file with data
-    # os.remove(test_file_path)
+def test_write_to_file_1virtual_item(valid_json_data_1virtual_item, file_for_writing):
+    write_to_file(valid_json_data_1virtual_item, "test_write_to_file.txt")
+    actual_content = file_for_writing.read()
+    expected_content = json.dumps(valid_json_data_1virtual_item, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
 
@@ -116,15 +109,10 @@ def test_read_from_file_1real_1virtual_items(valid_json_data_1real_1virtual_item
 
 
 @pytest.mark.critical_workflow_smoke
-def test_write_to_file_1real_1virtual_items(valid_json_data_1real_1virtual_items):
-    test_file_path = "test_write_to_file_1real_1virtual_items.txt"
-    test_file = open(test_file_path, "w+")
-    write_to_file(test_write_to_file_1real_1virtual_items, test_file_path)
-    actual_content = test_file.read()
-    expected_content = json.dumps(test_write_to_file_1real_1virtual_items, cls=CartEncoder)
-    test_file.close()
-    # to remove created file with data
-    # os.remove(test_file_path)
+def test_write_to_file_1real_1virtual_items(valid_json_data_1real_1virtual_items, file_for_writing):
+    write_to_file(valid_json_data_1real_1virtual_items, "test_write_to_file.txt")
+    actual_content = file_for_writing.read()
+    expected_content = json.dumps(valid_json_data_1real_1virtual_items, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
 
@@ -165,15 +153,10 @@ def test_read_from_file_2real_2virtual_items(valid_json_data_2real_2virtual_item
 
 @pytest.mark.skip(reason = "There is no disk space to execute the test")
 # @pytest.mark.positive_write
-def test_write_to_file_2real_2virtual_items(valid_json_data_2real_2virtual_items):
-    test_file_path = "test_write_to_file_2real_2virtual_items.txt"
-    test_file = open(test_file_path, "w+")
-    write_to_file(test_write_to_file_2real_2virtual_items, test_file_path)
-    actual_content = test_file.read()
+def test_write_to_file_2real_2virtual_items(valid_json_data_2real_2virtual_items, file_for_writing):
+    write_to_file(valid_json_data_2real_2virtual_items, "test_write_to_file.txt")
+    actual_content = file_for_writing.read()
     expected_content = json.dumps(valid_json_data_2real_2virtual_items, cls=CartEncoder)
-    test_file.close()
-    # to remove created file with data
-    # os.remove(test_file_path)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
 
@@ -201,10 +184,8 @@ def test_write_to_file_2real_2virtual_items(valid_json_data_2real_2virtual_items
         '{"cart_name": "TestCart", "real_items": [], "virtual_items": [], "total": test}',
 ])
 
-
 @pytest.mark.negative_read
 def test_read_from_file_exception(invalid_cart_data):
     with patch("builtins.open", mock_open(read_data=invalid_cart_data)):
         with pytest.raises(Exception):
             read_from_file("test_file_path")
- 
