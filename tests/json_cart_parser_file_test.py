@@ -5,10 +5,12 @@ from unittest.mock import mock_open, patch
 from src.parser.json_cart_parser import read_from_file, write_to_file, CartEncoder
 
 @pytest.fixture
-def file_for_writing():
+def path_for_temp_file():
     test_file = open("test_write_to_file.txt", "w+")
-    yield test_file
+    file_name = test_file.name
+    #os.path.realpath(file_name)
     test_file.close()
+    yield file_name
     os.remove("test_write_to_file.txt")
 
 
@@ -28,9 +30,10 @@ def test_read_from_file_zero_items(valid_json_data_zero_items):
 
 
 @pytest.mark.positive_write
-def test_write_to_file_zero_items(valid_json_data_zero_items, file_for_writing):
-    write_to_file(valid_json_data_zero_items, "test_write_to_file.txt")
-    actual_content = file_for_writing.read()
+def test_write_to_file_zero_items(valid_json_data_zero_items, path_for_temp_file):
+    write_to_file(valid_json_data_zero_items, path_for_temp_file)
+    with open(path_for_temp_file, "r") as f:
+        actual_content = f.read()
     expected_content = json.dumps(valid_json_data_zero_items, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
@@ -54,9 +57,10 @@ def test_read_from_file_1real_item(valid_json_data_1real_item):
 
 
 @pytest.mark.positive_write
-def test_write_to_file_1real_item(valid_json_data_1real_item, file_for_writing):
-    write_to_file(test_write_to_file_1real_item, "test_write_to_file.txt")
-    actual_content = file_for_writing.read()
+def test_write_to_file_1real_item(valid_json_data_1real_item, path_for_temp_file):
+    write_to_file(test_write_to_file_1real_item, path_for_temp_file)
+    with open(path_for_temp_file, "r") as f:
+        actual_content = f.read()
     expected_content = json.dumps(test_write_to_file_1real_item, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
@@ -80,9 +84,10 @@ def test_read_from_file_1virtual_item(valid_json_data_1virtual_item):
 
 
 @pytest.mark.positive_write
-def test_write_to_file_1virtual_item(valid_json_data_1virtual_item, file_for_writing):
-    write_to_file(valid_json_data_1virtual_item, "test_write_to_file.txt")
-    actual_content = file_for_writing.read()
+def test_write_to_file_1virtual_item(valid_json_data_1virtual_item, path_for_temp_file):
+    write_to_file(valid_json_data_1virtual_item, path_for_temp_file)
+    with open(path_for_temp_file, "r") as f:
+        actual_content = f.read()
     expected_content = json.dumps(valid_json_data_1virtual_item, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
@@ -109,9 +114,10 @@ def test_read_from_file_1real_1virtual_items(valid_json_data_1real_1virtual_item
 
 
 @pytest.mark.critical_workflow_smoke
-def test_write_to_file_1real_1virtual_items(valid_json_data_1real_1virtual_items, file_for_writing):
-    write_to_file(valid_json_data_1real_1virtual_items, "test_write_to_file.txt")
-    actual_content = file_for_writing.read()
+def test_write_to_file_1real_1virtual_items(valid_json_data_1real_1virtual_items, path_for_temp_file):
+    write_to_file(valid_json_data_1real_1virtual_items, path_for_temp_file)
+    with open(path_for_temp_file, "r") as f:
+        actual_content = f.read()
     expected_content = json.dumps(valid_json_data_1real_1virtual_items, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
@@ -153,9 +159,10 @@ def test_read_from_file_2real_2virtual_items(valid_json_data_2real_2virtual_item
 
 @pytest.mark.skip(reason = "There is no disk space to execute the test")
 # @pytest.mark.positive_write
-def test_write_to_file_2real_2virtual_items(valid_json_data_2real_2virtual_items, file_for_writing):
-    write_to_file(valid_json_data_2real_2virtual_items, "test_write_to_file.txt")
-    actual_content = file_for_writing.read()
+def test_write_to_file_2real_2virtual_items(valid_json_data_2real_2virtual_items, path_for_temp_file):
+    write_to_file(valid_json_data_2real_2virtual_items, path_for_temp_file)
+    with open(path_for_temp_file, "r") as f:
+        actual_content = f.read()
     expected_content = json.dumps(valid_json_data_2real_2virtual_items, cls=CartEncoder)
     assert actual_content == expected_content, f"Cart data writen in created file doesn't mach expected data, Actual data: {actual_content}, Expected data: {expected_content}"
 
