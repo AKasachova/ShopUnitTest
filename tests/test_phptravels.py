@@ -5,33 +5,35 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import time
 
+
 class ByLocators:
-    TAG_NAME = By.TAG_NAME, "tag name from the project to find element by"
-    ID = By.ID, "Id from the project to find element by"
-    XPATH = By.XPATH, "Xpath from the project to find element by"
-    CSS_SELECTOR = By.CSS_SELECTOR, "CSS selector from the project to find element by"
-    NAME = By.NAME, "Element name from the project to find element by"
-    CLASS_NAME = By.CLASS_NAME, "Class name from the project to find element by"
-    LINK_TEXT = By.LINK_TEXT, 'Link search, to search hyperlinks by the full hyperlink text '
-    PARTIAL_LINK_TEXT = By.PARTIAL_LINK_TEXT, 'Link search, tto search hyperlinks by the partial hyperlink tex'
+    FIRST_NAME_INPUT = By.TAG_NAME, "input[name='first_name']"
+    LOGIN_BUTTON = By.ID, "login"
+    SUBMIT_BUTTON = By.XPATH, "//button[@id='demo']"
+    LAST_NAME_INPUT = By.CSS_SELECTOR, "input[name='last_name']"
+    BUSINESS_NAME_INPUT = By.NAME, "business_name"
+    NAVBAR_TOGGLER_BUTTON = By.CLASS_NAME, "navbar-toggler"
+    LOGO_LINK = By.LINK_TEXT, "https://phptravels.com/"
+    LINKEDIN_LINK = By.PARTIAL_LINK_TEXT, "company"
 
 
 class TestLoginWithCorrectCreds(unittest.TestCase):
+    BASE_URL = 'https://phptravels.com/demo/'
+
     def setUp(self):
         self.driver = webdriver.Chrome()
         # self.driver = webdriver.Firefox()
-
+        self.driver.get(self.BASE_URL)
+        self.driver.maximize_window()
 
     def tearDown(self):
         self.driver.quit()
 
-
     def test_login(self):
-        self.driver.get('https://phptravels.com/demo/')
-        self.driver.maximize_window()
         # Current tab
         main_tab = self.driver.current_window_handle
-        login_button = WebDriverWait(self.driver, 10).until(ec.element_to_be_clickable((By.CLASS_NAME, 'btn-outline-dark')))
+        login_button = WebDriverWait(self.driver, 10).until(
+            ec.element_to_be_clickable((By.CLASS_NAME, 'btn-outline-dark')))
         login_button.click()
         # Wait for the new tab to be visible
         WebDriverWait(self.driver, 10).until(lambda driver: len(driver.window_handles) > 1)
@@ -61,6 +63,3 @@ class TestLoginWithCorrectCreds(unittest.TestCase):
     # This allows you to run tests if the file is run directly, but not if the file is imported into another script.
     # if __name__ == '__main__':
     #     unittest.main()
-
-
-
