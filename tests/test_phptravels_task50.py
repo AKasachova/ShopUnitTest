@@ -1,6 +1,7 @@
 import csv
 import pytest
 from selenium import webdriver
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -22,6 +23,7 @@ class ByLocators:
 def browser():
     driver = webdriver.Chrome()
     # driver = webdriver.Firefox()
+    driver.implicitly_wait(5)
     driver.get("https://phptravels.com/demo/")
     driver.maximize_window()
     yield driver
@@ -35,7 +37,7 @@ def login_test_data():
         for row in reader:
             test_data.append((row['username'], row['password']))
     return test_data
-# [("alionakosachova@gmail.com", "Aliona1!"), ("kosachova17021991@mail.ru", "Aliona2!")]
+
 
 @pytest.mark.parametrize("username, password", login_test_data())
 def test_login(browser, username, password):
@@ -60,12 +62,16 @@ def test_login(browser, username, password):
     # Adding existing user correct data
     email_input.send_keys(username)
     password_input.send_keys(password)
-    # Set captcha verification manually
+    # Set captcha verification manually, it pauses the execution of the script (introduces explicit waits), but do it unlike implicit and explicit waits provided by Selenium WebDriwer(does not dynamically wait for the conditions to be met)
     time.sleep(30)
     login_button_2.click()
     # Verify username on a page after logging into the account
     browser.maximize_window()
-    link_element = browser.find_element(By.CSS_SELECTOR, "a.btn-active-client")
-    actual_username = link_element.find_element(By.TAG_NAME, "span").text
-    expected_username = "Test"
-    assert expected_username in actual_username, f"Expected '{expected_username}' to be present in the 'Logged in as', but got: {actual_username}"
+    # Explicit wait for the username to appear after login with custom polling frequency
+    try:
+        username_element = WebDriverWait(browser, 20, poll_frequency=5).until(ec.presence_of_element_located((By.CSS_SELECTOR, "a.btn-active-client span")))
+        actual_username = username_element.text
+        expected_username = "Test"
+        assert expected_username in actual_username, f"Expected '{expected_username}' to be present in the 'Logged in as', but got: {actual_username}"
+    except TimeoutException:
+        pytest.fail("Timed out waiting for username to appear after login")
