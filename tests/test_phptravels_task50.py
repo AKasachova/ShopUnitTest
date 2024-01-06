@@ -43,26 +43,26 @@ def login_test_data():
 def test_login(browser, username, password):
     # Current tab
     main_tab = browser.current_window_handle
-    login_button = WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.CLASS_NAME, 'btn-outline-dark')))
+    login_button = WebDriverWait(browser, 5).until(ec.element_to_be_clickable((By.CLASS_NAME, 'btn-outline-dark')))
     login_button.click()
     # Wait for the new tab to be visible
-    WebDriverWait(browser, 10).until(lambda driver: len(driver.window_handles) > 1)
+    WebDriverWait(browser, 5).until(lambda driver: len(driver.window_handles) > 1)
     all_tabs = browser.window_handles
     # Switch to the new tab
     new_tab = [tab for tab in all_tabs if tab != main_tab][0]
     browser.switch_to.window(new_tab)
     # Wait for the login form to be visible
-    WebDriverWait(browser, 10).until(ec.presence_of_element_located((By.CLASS_NAME, "login-form")))
+    WebDriverWait(browser, 5).until(ec.presence_of_element_located((By.CLASS_NAME, "login-form")))
     # Add login data
     email_input = browser.find_element(By.NAME, "username")
     password_input = browser.find_element(By.NAME, "password")
     # Skip captcha element (on a real project feature captcha ("I'm not a robot") must be off/automation is not possible)
-    login_button_2 = WebDriverWait(browser, 10).until(ec.element_to_be_clickable((By.ID, "login")))
+    login_button_2 = WebDriverWait(browser, 5).until(ec.element_to_be_clickable((By.ID, "login")))
     browser.execute_script("arguments[0].scrollIntoView(true);", login_button_2)
     # Adding existing user correct data
     email_input.send_keys(username)
     password_input.send_keys(password)
-    # Set captcha verification manually, it pauses the execution of the script (introduces explicit waits), but do it unlike implicit and explicit waits provided by Selenium WebDriwer(does not dynamically wait for the conditions to be met)
+    # Set captcha verification manually.This waiter pauses the execution of the script (introduces explicit waits), but do it unlike implicit and explicit waits provided by Selenium WebDriver(does not dynamically wait for the conditions to be met).
     time.sleep(30)
     login_button_2.click()
     # Verify username on a page after logging into the account
