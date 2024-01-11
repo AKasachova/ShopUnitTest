@@ -22,7 +22,7 @@ def get_filtered_employees(browser, age_to_filter, salary_to_filter):
     i = 1
     sorted_employees = []
     while i <= count:
-        current_paginator_page = browser.find_element(By.CSS_SELECTOR, f"div#example_paginate span a.paginate_button:nth-child({i})")
+        current_paginator_page = browser.find_element(By.CSS_SELECTOR, f"div#example_paginate span a.paginate_button:nth-child({i})").click()
         table_rows = browser.find_elements(By.CSS_SELECTOR, "table#example tbody tr")
         for row in table_rows:
             columns = row.find_elements(By.TAG_NAME, "td")
@@ -38,19 +38,3 @@ def get_filtered_employees(browser, age_to_filter, salary_to_filter):
                 sorted_employees.append(employee_sorted)
         i += 1
     return sorted_employees
-
-
-# Example usage:
-browser_1 = webdriver.Chrome()
-browser_1.get("https://demo.seleniumeasy.com/table-sort-search-demo.html")
-
-# Set age and salary
-age_to_filter_1 = 30
-salary_to_filter_1 = 675000.0
-filtered_employees = get_filtered_employees(browser_1, age_to_filter_1, salary_to_filter_1)
-
-# Print the result
-for employee in filtered_employees:
-    print(f"Name: {employee.name}, Position: {employee.position}, Office: {employee.office}, Age: {employee.age}, Salary: {employee.salary}")
-
-browser_1.quit()

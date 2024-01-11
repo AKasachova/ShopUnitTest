@@ -1,0 +1,8 @@
+# Default ignored files
+venv
+.idea
+tests/.idea
+tests/.pytest_cache
+src/.pytest_cache
+
+
