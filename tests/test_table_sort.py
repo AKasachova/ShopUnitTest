@@ -14,7 +14,7 @@ def browser():
     driver.quit()
 
 
-def test_table_sort(browser, age_to_filter_1=30, salary_to_filter_1=675000.0):
+def test_table_sort(browser, age_to_filter_1=30, salary_to_filter_1=675000):
     filtered_employees = get_filtered_employees(browser, age_to_filter_1, salary_to_filter_1)
     for employee in filtered_employees:
         assert employee.age > age_to_filter_1 and employee.salary <= salary_to_filter_1, f"Employee doesn't much needed salary or age, the Employee age: {employee.age}, the Employee salary: {employee.salary}"
