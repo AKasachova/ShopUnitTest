@@ -29,6 +29,8 @@ def test_with_multiselect(browser):
     selected_options = all_options[:3]
     for option in selected_options:
         option.click()
+    # Ensure exactly 3 options were selected
+    assert len(select.all_selected_options) == 3, "Expected 3 options to be selected"
 
     for option in selected_options:
         assert option.is_selected(), f"{option.text} is not selected"

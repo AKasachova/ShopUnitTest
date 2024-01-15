@@ -14,15 +14,12 @@ class Employee:
 
 def get_filtered_employees(browser, age_to_filter, salary_to_filter):
     dropdown = browser.find_element(By.NAME, "example_length")
-    select = Select(dropdown)
-    select.select_by_value("10")
-    paginator = browser.find_element(By.CSS_SELECTOR, "div#example_paginate span")
-    paginator_pages = paginator.find_elements(By.CSS_SELECTOR, "a.paginate_button")
-    count = len(paginator_pages)
+    Select(dropdown).select_by_value("10")
+    paginator_all_pages = browser.find_elements(By.CSS_SELECTOR, "div#example_paginate span a.paginate_button")
+    count = len(paginator_all_pages)
     i = 1
     sorted_employees = []
     while i <= count:
-        current_paginator_page = browser.find_element(By.CSS_SELECTOR, f"div#example_paginate span a.paginate_button:nth-child({i})").click()
         table_rows = browser.find_elements(By.CSS_SELECTOR, "table#example tbody tr")
         for row in table_rows:
             columns = row.find_elements(By.TAG_NAME, "td")
