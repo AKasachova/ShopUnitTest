@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from .common import CommonOps
+from .common_ops import CommonOps
 
 
 class Logout(CommonOps):

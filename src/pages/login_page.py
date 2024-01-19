@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from .common import CommonOps
+from .common_ops import CommonOps
 
 
 class LogIn(CommonOps):
@@ -22,5 +22,5 @@ class LogIn(CommonOps):
     def click_login_button(self):
         self.find(self.FORM_SUBMIT_BTN).click()
 
-    def check_title_text(self):
+    def get_title_text(self):
         return self.find(self.PAGE_TITLE).text

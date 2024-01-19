@@ -1,15 +1,15 @@
-from .pages.formLogin import LogIn
-from .pages.logout import Logout
+from src.pages.login_page import LogIn
+from src.pages.logged_in_successfully_page import Logout
 
 
 def test_log_in_success(driver):
-    form = LogIn(driver)
-    form.make_screenshot_of_page('./tests/screenshots/test_login.png')
-    form.navigate_to_form()
-    form.enter_login_username("student")
-    form.enter_login_password("Password123")
-    form.click_login_button()
+    login_page = LogIn(driver)
+    login_page.make_screenshot_of_page('./tests/screenshots/test_login.png')
+    login_page.navigate_to_form()
+    login_page.enter_login_username("student")
+    login_page.enter_login_password("Password123")
+    login_page.click_login_button()
 
-    logout_page = Logout(driver)
-    success_log_in_text = logout_page.successful_log_in()
+    logged_in_page = Logout(driver)
+    success_log_in_text = logged_in_page.successful_log_in()
     assert "Logged In Successfully" in success_log_in_text, "User isn't logged in!"
