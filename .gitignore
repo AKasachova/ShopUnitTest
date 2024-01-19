@@ -6,4 +6,4 @@ src/.pytest_cache/*
 .pytest_cache/*
 _pycache_
 .idea/*
-tests/screenshots/*
+tests/screenshots
