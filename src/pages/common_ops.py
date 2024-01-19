@@ -22,5 +22,3 @@ class CommonOps:
 
     def make_screenshot_of_page(self, path):
         self.driver.save_screenshot(path)
-    
-    
