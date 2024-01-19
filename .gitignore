@@ -3,4 +3,6 @@ venv/*
 tests/.idea/*
 tests/.pytest_cache/*
 src/.pytest_cache/*
+.pytest_cache/*
+_pycache_
 .idea/*
