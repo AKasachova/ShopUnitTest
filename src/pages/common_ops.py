@@ -19,3 +19,6 @@ class CommonOps:
         actions = ActionChains(self.driver)
         actions.move_to_element(self.find(locator))
         actions.perform()
+
+    def make_screenshot_of_page(self, path):
+        self.driver.save_screenshot(path)

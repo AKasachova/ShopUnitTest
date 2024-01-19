@@ -4,6 +4,7 @@ from src.pages.logged_in_successfully_page import Logout
 
 def test_log_in_success(driver):
     login_page = LogIn(driver)
+    login_page.make_screenshot_of_page('./tests/screenshots/test_login.png')
     login_page.navigate_to_form()
     login_page.enter_login_username("student")
     login_page.enter_login_password("Password123")
