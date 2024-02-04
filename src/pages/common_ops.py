@@ -15,6 +15,9 @@ class CommonOps:
     def find(self, locator):
         return self.driver.find_element(*locator)
 
+    def find_elements(self, locator):
+        return self.driver.find_elements(*locator)
+
     def scroll_to_element(self, locator):
         actions = ActionChains(self.driver)
         actions.move_to_element(self.find(locator))
