@@ -8,14 +8,17 @@ from .common_ops import CommonOps
 
 
 class Home(CommonOps):
+    HOME_TITLE = (By.CSS_SELECTOR, "div.carousel-inner span")
+
     NAVBAR_HOME_ACTIVE = (By.LINK_TEXT, "/")
     NAVBAR_SIGNUP_LOGIN = (By.CSS_SELECTOR, "a[href='/login']")
-    HOME_TITLE = (By.CSS_SELECTOR, "div.carousel-inner span")
+    NAVBAR_PRODUCTS = (By.CSS_SELECTOR, "a[href='/products']")
+    NAVBAR_CART = (By.CSS_SELECTOR, "a[href='/view_cart']")
+
     LOGGED_IN = (By.CSS_SELECTOR, "div.shop-menu li:last-child a")
     USERNAME = (By.CSS_SELECTOR, "div.shop-menu li:last-child b")
     DELETE_ACCOUNT_LINK = (By.CSS_SELECTOR, "a[href='/delete_account']")
-    NAVBAR_PRODUCTS = (By.CSS_SELECTOR, "a[href='/products']")
-    NAVBAR_CART = (By.CSS_SELECTOR, "a[href='/view_cart']")
+
     CATEGORY_TITLE = (By.XPATH, "//div[@id='accordian']/preceding-sibling::h2")
     CATEGORY_WOMEN = (By.CSS_SELECTOR, "a[href='#Women']")
     CATEGORY_KIDS = (By.CSS_SELECTOR, "a[href='#Kids']")

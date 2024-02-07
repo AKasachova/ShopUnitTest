@@ -5,22 +5,23 @@ from src.pages.view_cart_page import ViewCart
 import time
 
 
-
-@pytest.mark.usefixtures("driver")
+@pytest.mark.usefixtures("web_browser")
 class TestAddProductsInCart:
-    def test_home_page_visible(self, driver):
-        home_page = Home(driver)
+    def test_home_page_visible(self, web_browser, browser):
+        home_page = Home(web_browser)
         assert "Automation" in home_page.home_title_text(), "'Home' page is not displayed!"
 
-    def test_category_page_is_displayed(self, driver):
-        Home(driver).get_products_page()
+    def test_products_added_in_cart_successfully(self, web_browser, browser):
+        Home(web_browser).get_products_page()
+        # if Products(driver).visibility_of_ad():
+        #     Products(driver).click_close_ad_button()
         # time to remove pop-ups and ads manually
-        time.sleep(5)
-        Products(driver).find_first_product_and_add_to_cart()
-        Products(driver).click_continue_shopping_button()
-        Products(driver).find_second_product_and_add_to_cart()
-        Products(driver).click_view_cart_link()
-        cart_page = ViewCart(driver)
+        time.sleep(10)
+        Products(web_browser).find_first_product_and_add_to_cart()
+        Products(web_browser).click_continue_shopping_button()
+        Products(web_browser).find_second_product_and_add_to_cart()
+        Products(web_browser).click_view_cart_link()
+        cart_page = ViewCart(web_browser)
         assert "Blue Top" in cart_page.get_first_product_description_text() and "Men Tshirt" in cart_page.get_second_product_description_text(), \
             "Added product(s) is(are) not displayed in the Cart!"
         assert "Rs. 500" in cart_page.get_first_product_price_text(), "The first product hasn't appropriate price!"
