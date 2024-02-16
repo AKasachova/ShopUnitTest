@@ -1,18 +1,15 @@
-import pytest
 from src.pages.home_page import Home
 from src.pages.products_page import Products
 from src.pages.view_cart_page import ViewCart
 import time
 
 
-@pytest.mark.usefixtures("web_browser")
 class TestAddProductsInCart:
-    def test_home_page_visible(self, web_browser, browser):
+    def test_products_added_in_cart_successfully(self, web_browser):
         home_page = Home(web_browser)
         assert "Automation" in home_page.home_title_text(), "'Home' page is not displayed!"
 
-    def test_products_added_in_cart_successfully(self, web_browser, browser):
-        Home(web_browser).get_products_page()
+        home_page.get_products_page()
         # if Products(driver).visibility_of_ad():
         #     Products(driver).click_close_ad_button()
         # time to remove pop-ups and ads manually

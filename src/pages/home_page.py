@@ -9,7 +9,7 @@ from .common_ops import CommonOps
 
 class Home(CommonOps):
     HOME_TITLE = (By.CSS_SELECTOR, "div.carousel-inner span")
-
+    HOME_TITLE_TEXT = 'Automation'
     NAVBAR_HOME_ACTIVE = (By.LINK_TEXT, "/")
     NAVBAR_SIGNUP_LOGIN = (By.CSS_SELECTOR, "a[href='/login']")
     NAVBAR_PRODUCTS = (By.CSS_SELECTOR, "a[href='/products']")
@@ -18,6 +18,7 @@ class Home(CommonOps):
     LOGGED_IN = (By.CSS_SELECTOR, "div.shop-menu li:last-child a")
     USERNAME = (By.CSS_SELECTOR, "div.shop-menu li:last-child b")
     DELETE_ACCOUNT_LINK = (By.CSS_SELECTOR, "a[href='/delete_account']")
+    LOGOUT_LINK = (By.CSS_SELECTOR, "a[href='/logout']")
 
     CATEGORY_TITLE = (By.XPATH, "//div[@id='accordian']/preceding-sibling::h2")
     CATEGORY_WOMEN = (By.CSS_SELECTOR, "a[href='#Women']")
@@ -36,6 +37,10 @@ class Home(CommonOps):
 
     def username_text(self):
         return self.wait_for(self.USERNAME).text
+
+    def click_logout_link(self):
+        self.wait_for(self.LOGOUT_LINK).click()
+        return SignupLogin(self.driver)
 
     def deleted_account_page(self):
         self.find(self.DELETE_ACCOUNT_LINK).click()
