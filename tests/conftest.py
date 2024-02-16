@@ -18,15 +18,16 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.fixture(scope="function")
 def web_browser(request):
-    run_in_selenoid = os.getenv("RUN_IN_SELENOID", False)
-
-    if run_in_selenoid:
-        b = request.getfixturevalue("driver")
+    run_in_selenoid = os.getenv("RUN_IN_SELENOID")
+    browser = os.getenv("BROWSER")
+    if run_in_selenoid == 'True':
+        b = remote_driver(browser)
     else:
-        b = webdriver.Chrome()
-        b.implicitly_wait(5)
-        b.get("https://www.automationexercise.com/")
-        b.maximize_window()
+        b = local_driver(browser)
+
+    b.implicitly_wait(5)
+    b.get("https://www.automationexercise.com/")
+    b.maximize_window()
 
     yield b
 
@@ -48,24 +49,24 @@ def web_browser(request):
             allure.attach(f"Platform: {platform.system()} {platform.version()}", name="Platform Info",
                           attachment_type=allure.attachment_type.TEXT)
         except:
-            pass
-
-    if not run_in_selenoid:
-        b.quit()
+            print('The report''s attachment can''t be generated!')
 
 
-@pytest.fixture(scope="class", params=["chrome", "firefox"])
-def browser(request):
-    return request.param
+def local_driver(browser):
+    if browser == 'chrome':
+        driver = webdriver.Chrome()
+    elif browser == 'firefox':
+        driver = webdriver.Firefox()
+    else:
+        print('Set needed browser: Chrome/Firefox!')
+    return driver
 
 
-@pytest.fixture(scope="function")
-def driver(browser):
+def remote_driver(browser):
     moon_options = {
         "enableVNC": True,
         "enableVideo": False
     }
-
     if browser == "chrome":
         options = ChromeOptions()
         options.set_capability("browserName", "chrome")
@@ -81,11 +82,4 @@ def driver(browser):
     driver = webdriver.Remote(
         command_executor="http://localhost:4444/wd/hub",
         options=options)
-    driver.implicitly_wait(5)
-    driver.get("https://www.automationexercise.com/")
     return driver
-
-# to run tests in Selenium (Windows)
-# set RUN_IN_SELENOID=True
-# pytest  -v -s --alluredir results
-#  allure serve results
